@@ -44,7 +44,7 @@ func main() {
 		IdleTimeout:  120 * time.Second,
 	}
 
-	// Server start channel
+	// Server start channel for error
 	serverErrors := make(chan error, 1)
 
 	// Start HTTP server
