@@ -10,22 +10,13 @@ import (
 	"time"
 
 	database "github.com/Bharat-kr/url-shortner/internal/storage"
-	"github.com/gorilla/mux"
+	routes "github.com/Bharat-kr/url-shortner/internal/routes"
 	"github.com/rs/cors"
 )
 
 func main() {
 
 	database.ConnectDb()
-
-	// Create router
-	router := mux.NewRouter()
-
-	// Health check endpoint
-	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Url Shortner is healthy"))
-	}).Methods("GET")
 
 	// CORS middleware
 	corsHandler := cors.New(cors.Options{
@@ -34,11 +25,12 @@ func main() {
 		AllowedHeaders:   []string{"Content-Type", "Authorization"},
 		AllowCredentials: true,
 	})
+
 	serverPort := "8000"
 	// Create server with timeouts
 	srv := &http.Server{
 		Addr:         ":" + serverPort,
-		Handler:      corsHandler.Handler(router),
+		Handler:      corsHandler.Handler(routes.RegisterRoutes()),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  120 * time.Second,

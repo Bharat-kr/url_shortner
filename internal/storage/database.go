@@ -11,11 +11,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type Dbinstance struct {
-	Db *gorm.DB
-}
-
-var DB Dbinstance
+var DB *gorm.DB
 
 func ConnectDb() {
 	dbUser := os.Getenv("DB_USER")
@@ -42,5 +38,5 @@ func ConnectDb() {
 		"Connected to database",
 	)
 	db.AutoMigrate(&models.Url{})
-	DB = Dbinstance{Db: db}
+	DB = db
 }
